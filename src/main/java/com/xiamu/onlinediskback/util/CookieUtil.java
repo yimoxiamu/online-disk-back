@@ -44,13 +44,12 @@ public class CookieUtil {
      * @param request
      * @return
      */
-    private  Map<String,Cookie> ReadCookieMap(HttpServletRequest request){
+    public   Map<String,Cookie> ReadCookieMap(HttpServletRequest request){
         Map<String,Cookie> cookieMap = new HashMap<String,Cookie>();
         Cookie[] cookies = request.getCookies();
         if(null!=cookies){
             for(Cookie cookie : cookies){
                 cookieMap.put(cookie.getName(), cookie);
-                System.out.println(cookie.getName()+cookie.getValue());
             }
         }
         return cookieMap;

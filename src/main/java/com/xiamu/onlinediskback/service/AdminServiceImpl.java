@@ -1,13 +1,12 @@
 package com.xiamu.onlinediskback.service;
 
 import com.xiamu.onlinediskback.dao.AdminDao;
-import com.xiamu.onlinediskback.dao.AdminDaoImpl;
 import com.xiamu.onlinediskback.entity.AdminEntity;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Log
+@Slf4j
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired

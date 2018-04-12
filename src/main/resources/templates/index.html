@@ -1,10 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/index/default.css}">
+    <link rel="stylesheet" th:href="@{/css/index/style.css}">
+    <link rel="stylesheet" th:href="@{/css/index/normalize.css}">
+    <link href="http://cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <script  th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script  th:src="@{/js/bootstrap.min.js}"></script>
+    <script  th:src="@{/js/index/main.js}"></script>
 </head>
 <body>
-haha
+<div class="htmleaf-container">
+    <div class="container pb30">
+        <div class="clear-backend">
+            <div class="avatar">
+                <div>
+                    <a href="http://www.weibo.com/518501269" target="_blank">
+                        <img th:src="@{/img/admin.png}">
+                    </a>
+                </div>
+            </div>
+
+            <!-- tab-menu -->
+            <input type="radio" class="tab-1" name="tab" checked="checked">
+            <span>Home</span><i class="fa fa-home"></i>
+
+            <input type="radio" class="tab-2" name="tab">
+            <span>Posts</span><i class="fa fa-medium"></i>
+
+            <input type="radio" class="tab-3 user" name="tab">
+            <span>Users</span><i class="fa fa-user"></i>
+
+            <input type="radio" class="tab-4" name="tab">
+            <span>Comments</span><i class="fa fa-comment"></i>
+
+            <input type="radio" class="tab-5" name="tab">
+            <span>Upload</span><i class="fa fa-cloud-upload"></i>
+
+            <input type="radio" class="tab-6" name="tab">
+            <span>Favorite</span><i class="fa fa-star"></i>
+
+            <input type="radio" class="tab-7" name="tab">
+            <span>Photos</span><i class="fa fa-photo"></i>
+
+            <input type="radio" class="tab-8" name="tab">
+            <span>Analysis</span><i class="fa fa-line-chart"></i>
+
+            <input type="radio" class="tab-9" name="tab">
+            <span>Links</span><i class="fa fa-link"></i>
+
+            <input type="radio" class="tab-10" name="tab">
+            <span>Settings</span><i class="fa fa-cog"></i>
+
+            <!-- tab-top-bar -->
+            <div class="top-bar">
+                <ul>
+                    <li>
+                        <a th:href="@{/login}" title="Log Out" onclick=delCookie()>
+                            <i class="fa fa-sign-out"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" title="Messages">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a  title="Edit" >
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- tab-content -->
+            <div class="tab-content">
+                <section class="tab-item-1">
+                    <table class="table">
+                        <h2>管理员信息</h2>
+                        <thead>
+                        <tr>
+                            <th>管理员名称</th>
+                            <th th:text="${name}">默认</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>管理员权限</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>拉黑</td>
+                            <td>Mumbai</td>
+                        </tr>
+                        <tr>
+                            <td>扩容</td>
+                            <td>Mumbai</td>
+                        </tr>
+                        <tr>
+                            <td>会员</td>
+                            <td>Mumbai</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section class="tab-item-2">
+                    <h1>Two</h1>
+                </section>
+                <section class="tab-item-3">
+                    <iframe src="http://localhost:8080/user" frameborder="0" height="80%" width="100%"></iframe>
+                </section>
+                <section class="tab-item-4">
+                    <h1>Four</h1>
+                </section>
+                <section class="tab-item-5">
+                    <h1>Five</h1>
+                </section>
+                <section class="tab-item-6">
+                    <h1>Six</h1>
+                </section>
+                <section class="tab-item-7">
+                    <h1>Sever</h1>
+                </section>
+                <section class="tab-item-8">
+                    <h1>Eight</h1>
+                </section>
+                <section class="tab-item-9">
+                    <h1>Nine</h1>
+                </section>
+                <section class="tab-item-10">
+                    <h1>Ten</h1>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

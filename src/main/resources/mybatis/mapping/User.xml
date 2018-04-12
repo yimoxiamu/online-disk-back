@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiamu.onlinediskback.dao.UserDao" >
+    <resultMap id="BaseResultMap" type="com.xiamu.onlinediskback.entity.UserEntity" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="pass" property="pass" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="staus" property="staus" jdbcType="INTEGER"/>
+        <result column="size" property="size" jdbcType="VARCHAR"/>
+        <result column="use" property="use" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, name, pass, email, staus, size , use
+    </sql>
+
+    <select id="getUserList" resultMap="BaseResultMap" parameterType="Map" >
+        SELECT
+        *
+        FROM user
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <if test="name != null and name.length()>0"> AND name=#{name}</if>
+            <if test="email != null and email.length()>0"> AND email=#{email}</if>
+            <if test="staus != null"> AND staus=#{staus}</if>
+        </trim>
+    </select>
+
+    <select id="getUserById" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+
+    <update id="update" parameterType="java.util.Map" >
+        UPDATE
+        user
+        SET
+        username = #{user.username},age = #{user.age}
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer" >
+        DELETE FROM
+        user
+        WHERE
+        id = #{id}
+    </delete>
+</mapper>
