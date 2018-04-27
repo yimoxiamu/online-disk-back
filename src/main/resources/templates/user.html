@@ -2,56 +2,259 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/amazeui.min.css}"/>
     <!--<link rel="stylesheet" th:href="@{/css/index/default.css}">-->
     <!--<link rel="stylesheet" th:href="@{/css/index/style.css}">-->
     <!--<link rel="stylesheet" th:href="@{/css/index/normalize.css}">-->
     <!--<link href="http://cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">-->
-    <script  th:src="@{/js/jquery-3.3.1.min.js}"></script>
-    <script  th:src="@{/js/bootstrap.min.js}"></script>
-    <script  th:src="@{/js/index/main.js}"></script>
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/amazeui.min.js}"></script>
+    <script th:src="@{/js/amazeui.dialog.min.js}"></script>
+    <script th:src="@{/js/index/main.js}"></script>
+    <script>
+
+    </script>
+    <style type="text/css">
+        .form-one {
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .button-find {
+            width: 280px;
+            float: right;
+        }
+    </style>
 </head>
 <body>
 
-<form class="form-inline" th:method="post" th:action="@{/getUsers}" >
+<form class="form-inline" th:method="post" th:action="@{/getUsers}">
     <div class="form-group">
         <label for="exampleInputName2">姓名:</label>
         <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe" name="name">
     </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <div class="form-group">
         <label for="exampleInputEmail2">邮箱:</label>
-        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com" name="email">
+        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com"
+               name="email">
     </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <div class="form-group">
         <label for="exampleInputEmail2">状态:</label>
         启用<input type="radio" class="form-control" name="staus" value="0">
         停用<input type="radio" class="form-control" name="staus" value="1">
     </div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="form-group">
+        <label for="exampleInputEmail2">vip:</label>
+        启用<input type="radio" class="form-control" name="vip" value="1">
+        停用<input type="radio" class="form-control" name="vip" value="0">
+    </div>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <button type="submit" class="btn btn-default">查找</button>
+    <div class="button-find">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">查找</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">增加用户</button>
+        <button type="button" class="btn btn-primary" data-am-modal="{target: '#my-alert'}">全服通告</button>
+    </div>
 </form>
-
 
 <table class="table table-hover table-bordered">
     <tr>
         <td>用户名</td>
-        <td>密码</td>
         <td>邮箱</td>
-        <td>状态</td>
+        <td>封停状态</td>
+        <td>会员</td>
         <td>最大空间</td>
         <td>已用空间</td>
+        <td>通知</td>
     </tr>
     <tr th:each="userList:${userLists}">
-        <td th:text="${userList.name}">**</td>
-        <td th:text="${userList.pass}">**</td>
+        <td>
+            <a class="one-name" th:text="${userList.name}" data-toggle="modal" data-target="#myModal">
+            </a>
+        </td>
         <td th:text="${userList.email}">**</td>
-        <td th:text="${userList.staus}">**</td>
+        <td th:text="${userList.staus}==0?启用中:拉黑中"></td>
+        <td th:text="${userList.vip}==1?是:否"></td>
         <td th:text="${userList.size}">**</td>
         <td th:text="${userList.use}">**</td>
+        <td th:text="${userList.msg}">**</td>
     </tr>
 </table>
+<!--<ul class="pagination">-->
+<!--<li><a href="#">&laquo;</a></li>-->
+<!--<li><a href="#">1</a></li>-->
+<!--<li><a class="pageNum" th:value="2">2</a></li>-->
+<!--<li><a href="#">3</a></li>-->
+<!--<li><a href="#">4</a></li>-->
+<!--<li><a href="#">5</a></li>-->
+<!--<li><a href="#">&raquo;</a></li>-->
+<!--</ul>-->
+<div>
+    <ul class="pagination" th:each="countList:${countList}">
+        <li><a class="pageNum" th:value="${countList.currentPage}" th:text="${countList.currentPage}"></a></li>
+    </ul>
+</div>
+<form th:method="post" th:action="@{/getUsers2}" id="hidden-form">
+    <input type="hidden" name="pageNum" class="hidden-text">
+    <div style="display:none;"><input class="hidden-submit" type="submit"></div>
+</form>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    个人信息
+                </h4>
+            </div>
+            <form class="form-inline" th:action="@{/updateUser}" th:method="post">
+                <div class="modal-body">
+                    <div class="form-one">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">用&nbsp;户&nbsp;名&nbsp;:</label>
+                            <input type="text" name="name" class="form-control name-one">
+                            <input type="hidden" name="id" class="id-one">
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+                            <input type="text" name="pass" class="form-control pass-one"/>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:</label>
+                            <input type="email" name="email" class="form-control email-one" id="exampleInputEmail1">
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">最大空间:</label>
+                            <input type="text" name="size" class="form-control size-one">
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">已用空间:</label>
+                            <input type="text" name="use" class="form-control use-one">
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label>通&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;知:</label>
+                            <input type="text" name="msg" class="form-control msg-one">
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">会员状态:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="vip_update" class="form-control vip-one1" value="1">是&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="vip_update" class="form-control vip-one2" value="0">否
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">用户状态:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="staus_update" class="form-control staus-one1" value="0">正常&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="staus_update" class="form-control staus-one2" value="1">封停
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        提交更改
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal2） -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel2">
+                    个人信息
+                </h4>
+            </div>
+            <form class="form-inline" th:action="@{/insertUser}" th:method="post">
+                <div class="modal-body">
+                    <div class="form-one">
+                        <div class="form-group">
+                            <label>用&nbsp;户&nbsp;名&nbsp;:</label>
+                            <input type="text" name="name" class="form-control ">
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+                            <input type="text" name="pass" class="form-control "/>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:</label>
+                            <input type="email" name="email" class="form-control ">
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label>最大空间:</label>
+                            <input type="text" name="size" class="form-control ">
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label>已用空间:</label>
+                            <input type="text" name="use" class="form-control ">
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label>通&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;知:</label>
+                            <input type="text" name="msg" class="form-control ">
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label>会员状态:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="vip_insert" class="form-control " value="1">是&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="vip_insert" class="form-control " value="0">否
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <label>用户状态:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="staus_insert" class="form-control " value="0">正常&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="staus_insert" class="form-control " value="1">封停
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        增加用户
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">用户公告</div>
+        <div class="am-modal-bd">
+            <label><input class="form-control msg" type="text"></label>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn" id="pullMsg">发布</span>
+        </div>
+    </div>
+</div>
+<!--通告隐藏表单-->
+<form class="form-msg" th:action="@{/pullMsg}" th:method="post">
+    <input type="hidden" name="msg" class="msg-text" />
+</form>
 </body>
 </html>

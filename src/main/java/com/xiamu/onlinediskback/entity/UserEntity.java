@@ -13,4 +13,7 @@ public class UserEntity {
     private int staus;
     private String size;
     private String use;
+    private String vip;
+    private String pic;
+    private String msg;
 }

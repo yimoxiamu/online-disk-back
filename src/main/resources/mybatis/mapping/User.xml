@@ -9,12 +9,101 @@
         <result column="staus" property="staus" jdbcType="INTEGER"/>
         <result column="size" property="size" jdbcType="VARCHAR"/>
         <result column="use" property="use" jdbcType="VARCHAR"/>
+        <result column="vip" property="vip" jdbcType="VARCHAR"/>
+        <result column="pic" property="pic" jdbcType="VARCHAR"/>
+        <result column="msg" property="msg" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
-        id, name, pass, email, staus, size , use
+        id, name, pass, email, staus, size , `use`,vip,pic,msg
     </sql>
-
+    <sql id="key">
+        <trim suffixOverrides=",">
+            <if test="name!=null and name.length()>0">
+                name,
+            </if>
+            <if test="pass!=null and pass.length()>0">
+                pass,
+            </if>
+            <if test="email!=null and email.length()>0">
+                email,
+            </if>
+            <if test="size!=null and size.length()>0">
+                size,
+            </if>
+            <if test="use!=null and use.length()>0">
+                `use`,
+            </if>
+            <if test="vip!=null and vip.length()>0">
+                vip,
+            </if>
+            <if test="staus!=null">
+                staus,
+            </if>
+            <if test="msg!=null and msg.length()>0">
+                msg,
+            </if>
+        </trim>
+    </sql>
+    <sql id="value">
+        <trim suffixOverrides=",">
+            <if test="name!=null and name.length()>0">
+                ${name},
+            </if>
+            <if test="pass!=null and pass.length()>0">
+                ${pass},
+            </if>
+            <if test="email!=null and email.length()>0">
+                ${email},
+            </if>
+            <if test="size!=null and size.length()>0">
+                ${size},
+            </if>
+            <if test="use!=null and use.length()>0">
+                ${use},
+            </if>
+            <if test="vip!=null and vip.length()>0">
+                ${vip},
+            </if>
+            <if test="staus!=null">
+                ${staus},
+            </if>
+            <if test="msg!=null and msg.length()>0">
+                ${msg},
+            </if>
+        </trim>
+    </sql>
+    <update id="updateUser" parameterType="Map">
+    UPDATE user
+      <set>
+          <if test="pass!=null and pass.length()>0">
+              name=${name},
+          </if>
+          <if test="pass!=null and pass.length()>0">
+              pass=${pass},
+          </if>
+          <if test="email!=null and email.length()>0">
+              email=${email},
+          </if>
+          <if test="size!=null and size.length()>0">
+              size=${size},
+          </if>
+          <if test="use!=null and use.length()>0">
+              `use`=${use},
+          </if>
+          <if test="vip!=null and vip.length()>0">
+              vip=${vip},
+          </if>
+          <if test="staus!=null">
+              staus=${staus},
+          </if>
+          <if test="msg!=null and msg.length()>0">
+              msg=${msg},
+          </if>
+      </set>
+        WHERE
+        id=${id}
+    </update>
     <select id="getUserList" resultMap="BaseResultMap" parameterType="Map" >
         SELECT
         *
@@ -23,8 +112,24 @@
             <if test="name != null and name.length()>0"> AND name=#{name}</if>
             <if test="email != null and email.length()>0"> AND email=#{email}</if>
             <if test="staus != null"> AND staus=#{staus}</if>
+            <if test="vip != null"> AND vip=#{vip}</if>
         </trim>
     </select>
+
+    <insert id="insertUser" parameterType="Map">
+        insert into user(<include refid="key"></include>) values(<include refid="value"></include>)
+    </insert>
+
+    <select id="getUserByName" parameterType="String" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM user
+        WHERE name = #{name}
+    </select>
+
+    <update id="updateMsg" parameterType="String">
+        UPDATE user set msg = #{msg}
+    </update>
 
     <select id="getUserById" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
         SELECT

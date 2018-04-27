@@ -6,5 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserService {
-    List<UserEntity> getUsers(Map map);
+    Map<String,Object> getUsers(Map<String,String> map);
+    UserEntity getUserByName(String name);
+    void insertUser(Map map);
+    void updateUser(Map map);
+    String updateMsg(String msg);
 }

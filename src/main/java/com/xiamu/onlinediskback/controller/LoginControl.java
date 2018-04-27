@@ -32,7 +32,7 @@ public class LoginControl {
     @Autowired
     UserService userService;
 
-    @RequestMapping("login")
+    @RequestMapping("")
     public String login(HttpServletRequest request,
                         HttpServletResponse response,
                         Model model) {
