@@ -16,7 +16,9 @@ spring:
 mybatis:
   mapper-locations: classpath:mybatis/mapping/*.xml
   config-location: classpath:mybatis/mybatis-config.xml
-
+logging:
+  level:
+    com.xiamu.onlinediskback.dao: debug
 ##pagehelper分页插件
 #pagehelper:
 #    helperDialect: mysql

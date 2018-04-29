@@ -62,6 +62,28 @@ $(function () {
         $('.msg-text').val(msg);
         $('.form-msg').submit();
     })
+
+    $('.pull').click(function () {
+        var msg=$('#msg-text').val();
+        $.ajax({type:"post",
+            url:'http://localhost:8080/allMsg',
+            dataType:"json",
+            data:{"msg":msg},
+        success:function (date) {
+            if(date.retCode=="0000"){
+                AMUI.dialog.alert({
+                    title: date.retMsg,
+                    onConfirm: function() {
+                        console.log('close');
+                    }
+                });
+            }
+            else {
+                alert(date.retMsg);
+            }
+        }})
+    })
+
 })
 
 

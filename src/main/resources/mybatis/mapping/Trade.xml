@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiamu.onlinediskback.dao.TradeDao">
+  <resultMap id="BaseResultMap" type="com.xiamu.onlinediskback.entity.TradeEntity">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="tradeNo" property="tradeNo" jdbcType="VARCHAR"/>
+        <result column="userId" property="userId" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DOUBLE"/>
+        <result column="info" property="info" jdbcType="VARCHAR"/>
+        <result column="time" property="time" jdbcType="DATE"/>
+        <result column="success" property="success" jdbcType="INTEGER"/>
+        <association property="userEntity" javaType="com.xiamu.onlinediskback.entity.UserEntity">
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        </association>
+  </resultMap>
+  <select id="getAllPay" resultMap="BaseResultMap" parameterType="Map">
+      SELECT
+      t.*,u.`name`
+      FROM trade t ,`user` u
+      <trim prefix="WHERE" prefixOverrides="AND |OR">
+          <if test="tradeNo != null and tradeNo.length()>0">AND t.tradeNo=${tradeNo}</if>
+          <if test="userId != null and userId.length()>0"> AND t.userId=${userId}</if>
+          and t.userId = u.id
+      </trim>
+      ORDER BY userId DESC
+  </select>
+</mapper>

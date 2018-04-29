@@ -1,12 +1,12 @@
 package com.xiamu.onlinediskback.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.xiamu.onlinediskback.entity.MsgEntity;
 import com.xiamu.onlinediskback.entity.PageEntity;
 import com.xiamu.onlinediskback.entity.UserEntity;
+import com.xiamu.onlinediskback.service.MsgService;
 import com.xiamu.onlinediskback.service.UserService;
-import com.xiamu.onlinediskback.util.CommonUtil;
-import com.xiamu.onlinediskback.util.CookieUtil;
-import com.xiamu.onlinediskback.util.SqlUtil;
+import com.xiamu.onlinediskback.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,9 +28,32 @@ public class IndexControl {
     @Autowired
     UserService userService;
 
+    @Autowired
+    MsgService msgService;
+
+    @RequestMapping("pay")
+    public String pay(HttpServletRequest request,Model model){
+        CookieUtil cookieUtil = new CookieUtil();
+        if (cookieUtil.getCookieByName(request, "name") != null) {
+            model.addAttribute("name", cookieUtil.getCookieByName(request, "name").getValue());
+            return "pay";
+        }
+        return "login";
+    }
+
+    @RequestMapping("post")
+    public String post(HttpServletRequest request,Model model){
+        CookieUtil cookieUtil = new CookieUtil();
+        if (cookieUtil.getCookieByName(request, "name") != null) {
+            model.addAttribute("name", cookieUtil.getCookieByName(request, "name").getValue());
+            return "post";
+        }
+        return "login";
+    }
+
 
     @RequestMapping("user")
-    public String toUser(HttpServletRequest request,Model model) {
+    public String toUser(HttpServletRequest request, Model model) {
         CookieUtil cookieUtil = new CookieUtil();
         if (cookieUtil.getCookieByName(request, "name") != null) {
             model.addAttribute("name", cookieUtil.getCookieByName(request, "name").getValue());
@@ -45,63 +68,40 @@ public class IndexControl {
                            @RequestParam("email") String email,
                            String staus,
                            String vip
-                            , Model model) {
+            , Model model) {
         Map map = CommonUtil.map;
         map.put("name", name);
         map.put("email", email);
         map.put("staus", staus);
         map.put("vip", vip);
-        map.put("pageNum","1");
+        map.put("pageNum", "1");
 
-        String jsonText=JSON.toJSONString(map);
-        log.info("前端传递过来的参数为："+jsonText);
+        String jsonText = JSON.toJSONString(map);
+        log.info("前端传递过来的参数为：" + jsonText);
         Map map1 = userService.getUsers(map);
-        log.info("获取user总数成功，总数为："+map1.get("listsize"));
-        int count=(Integer) map1.get("listsize");
-        int pageCount;
-        if (count%10==0){
-            pageCount=count/10;
-        }else {
-            pageCount=count/10+1;
-        }
-        List list=new ArrayList();
-        for (int i = 1; i <=pageCount; i++) {
-            PageEntity pageEntity=new PageEntity();
-            pageEntity.setCurrentPage(i);
-            list.add(pageEntity);
-        }
-        model.addAttribute("countList",list);
+        log.info("获取user总数成功，总数为：" + map1.get("listsize"));
+        List list= PageUtil.pageNum(map1,"listsize");
+        model.addAttribute("countList", list);
         model.addAttribute("userLists", map1.get("userlist"));
         return "user";
     }
 
     //通过缓存实现分页
     @RequestMapping("getUsers2")
-    public String getUsers2(String pageNum,Model model){
-        Map map =CommonUtil.map;
-        if(pageNum!=null&&!pageNum.equals("")){
-            map.put("pageNum",pageNum);
-        }else {
-            map.put("pageNum",(Integer)map.get("pageNum")+1);
+    public String getUsers2(String pageNum, Model model) {
+        Map map = CommonUtil.map;
+        if (pageNum != null && !pageNum.equals("")) {
+            map.put("pageNum", pageNum);
+        } else {
+            map.put("pageNum", (Integer) map.get("pageNum") + 1);
         }
         Map map1 = userService.getUsers(map);
-        int count=(Integer) map1.get("listsize");
-        int pageCount;
-        if (count%10==0){
-            pageCount=count/10;
-        }else {
-            pageCount=count/10+1;
-        }
-        List list=new ArrayList();
-        for (int i = 1; i <=pageCount; i++) {
-            PageEntity pageEntity=new PageEntity();
-            pageEntity.setCurrentPage(i);
-            list.add(pageEntity);
-        }
-        model.addAttribute("countList",list);
+        List list= PageUtil.pageNum(map1,"listsize");
+        model.addAttribute("countList", list);
         model.addAttribute("userLists", map1.get("userlist"));
         return "user";
     }
+
     //通过name查找单个用户
     @ResponseBody
     @RequestMapping(value = "getUser", method = {RequestMethod.GET, RequestMethod.POST})
@@ -114,7 +114,7 @@ public class IndexControl {
     //添加用户
     @RequestMapping(value = "insertUser", method = {RequestMethod.GET, RequestMethod.POST})
     public String insertUser(String name, String pass, String email, String size,
-                             String use, String vip_insert, String staus_insert,String msg) {
+                             String use, String vip_insert, String staus_insert, String msg) {
         Map map = new HashMap();
         map.put("name", name);
         map.put("pass", pass);
@@ -123,18 +123,18 @@ public class IndexControl {
         map.put("use", use);
         map.put("vip", vip_insert);
         map.put("staus", staus_insert);
-        map.put("msg",msg);
-        Map map1=SqlUtil.addZifu(map);
+        map.put("msg", msg);
+        Map map1 = SqlUtil.addZifu(map);
         userService.insertUser(map1);
         return "user";
     }
 
 
     //更新用户信息
-    @RequestMapping(value = "updateUser",method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "updateUser", method = {RequestMethod.GET, RequestMethod.POST})
     public String updateUser(String name, String pass, String email, String size,
-                             String use, String vip_update, String staus_update,String id,String msg){
-        Map map=new HashMap();
+                             String use, String vip_update, String staus_update, String id, String msg) {
+        Map map = new HashMap();
         map.put("name", name);
         map.put("pass", pass);
         map.put("email", email);
@@ -142,22 +142,47 @@ public class IndexControl {
         map.put("use", use);
         map.put("vip", vip_update);
         map.put("staus", staus_update);
-        map.put("id",id);
-        map.put("msg",msg);
-        Map map1=SqlUtil.addZifu(map);
+        map.put("id", id);
+        map.put("msg", msg);
+        Map map1 = SqlUtil.addZifu(map);
         userService.updateUser(map1);
         return "user";
     }
 
-    //发布全服公告
+    //发布用户通知
     @RequestMapping("pullMsg")
-    public String pullMsg(String msg){
-        log.info("发布全服公告开始,前端传递过来的数据为："+msg);
-        String code=userService.updateMsg(msg);
-        if (code.equals("0000")){
+    public String pullMsg(String msg) {
+        log.info("发布用户信息开始,前端传递过来的数据为：" + msg);
+        String code = userService.updateMsg(msg);
+        if (code.equals("0000")) {
             return "user";
-        }else
+        } else
             return "error";
+    }
+
+
+    //发布全服通告
+    @ResponseBody
+    @RequestMapping("allMsg")
+    public ResultUtil allMsg(String msg) {
+        ResultUtil resultUtil = new ResultUtil();
+        log.info("发布全服通告开始,前端传递过来的数据为：" + msg);
+        String code = msgService.pullMsg(msg);
+        if (code.equals("0000")) {
+            resultUtil.setRetCode("0000");
+            resultUtil.setRetMsg("发布成功");
+            return resultUtil;
+        } else
+            resultUtil.setRetCode("1111");
+            resultUtil.setRetMsg("发布失败");
+        return resultUtil;
+    }
+
+    @RequestMapping("historyMsg")
+    public String historyMsg(Model model){
+        List<MsgEntity> msgEntities= msgService.historyMsg();
+        model.addAttribute("msgList",msgEntities);
+        return "post";
     }
 
 }

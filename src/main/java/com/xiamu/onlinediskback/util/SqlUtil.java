@@ -28,6 +28,12 @@ public class SqlUtil {
         if (map.get("msg")!=null){
             map.put("msg","\'"+map.get("msg")+"\'");
         }
+        if (map.get("tradeNo")!=null&&map.get("tradeNo")!=""){
+            map.put("tradeNo","\'"+map.get("tradeNo")+"\'");
+        }
+        if (map.get("userId")!=null&&map.get("userId")!=""){
+            map.put("userId","\'"+map.get("userId")+"\'");
+        }
 
         return map;
     }
