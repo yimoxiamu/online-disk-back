@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/amazeui.min.css}"/>
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/amazeui.min.js}"></script>
+    <script th:src="@{/js/amazeui.dialog.min.js}"></script>
+    <script th:src="@{/js/index/main.js}"></script>
+    <style type="text/css">
+        .btn-pull {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<form class="form-inline" th:action="@{/getUserFile}" th:method="post">
+    <label>用户名 &nbsp;:&nbsp;&nbsp;&nbsp;</label>
+    <input type="text" class="form-control" id="uName" name="UserName">
+    <label>&nbsp;&nbsp;&nbsp;&nbsp;用户ID &nbsp;:&nbsp;&nbsp;&nbsp;</label>
+    <input type="text" class="form-control" id="UId" name="UserId">
+    <div class="btn-pull">
+        <input type="submit" class="btn btn-primary pay-btn" value="搜索">
+    </div>
+</form>
+<div style="height: 20px"></div>
+<table class="table table-hover table-bordered" th:if="${UserFileList!=null}">
+    <tr>
+        <td>用户名</td>
+        <td>文件名</td>
+        <td>文件类型</td>
+        <td>文件大小</td>
+        <td>操作</td>
+    </tr>
+    <tr th:each="userFileList:${UserFileList}">
+        <td th:text="${userFileList.userEntity.name}"class="fileName"></td>
+        <td th:text="${userFileList.fileName}" ></td>
+        <td th:text="${userFileList.type}" ></td>
+        <td th:text="${userFileList.size}"></td>
+        <td>
+            <button class="btn btn-error file-delete" th:value="${userFileList.id}">删除</button>
+        </td>
+    </tr>
+</table>
+<img th:src="@{/img/back.jpg}" th:if="${UserFileList}==null" style="width: 70%;height: 70%;float: right">
+<div>
+    <ul class="pagination" th:each="userFileListSize:${UserFileListSize}">
+        <li><a class="pageNum" th:value="${userFileListSize.currentPage}" th:text="${userFileListSize.currentPage}"></a></li>
+    </ul>
+</div>
+<form th:method="post" th:action="@{/getUserFile2}" id="hidden-form">
+    <input type="hidden" name="pageNum" class="hidden-text">
+    <div style="display:none;"><input class="hidden-submit" type="submit"></div>
+</form>
+</body>
+</html>

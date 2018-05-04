@@ -84,6 +84,23 @@ $(function () {
         }})
     })
 
+
+    $('.file-delete').click(function () {
+       var fileId=$(this).val();
+       var parent=$(this).parent();
+       $.ajax({
+           type:'post',
+           url:'http://localhost:8080/deleteFile',
+           dataType:"json",
+           data:{"fileId":fileId},
+           success:function (message) {
+               if(message.retCode==0000){
+                   parent.parent().remove();
+               }
+           }
+       })
+    })
+
 })
 
 

@@ -30,7 +30,7 @@ public class PayControl {
         map= SqlUtil.addZifu(map);
         Map map1=tradeService.getAllPay(map);
         log.info("获得总数目为："+map1.get("tradeEntitiesize"));
-        List list= PageUtil.pageNum(map1,"tradeEntitiesize");
+        List list= PageUtil.pageNum(map1,"tradeEntitiesize",10);
         model.addAttribute("tradeList",map1.get("tradeEntities"));
         model.addAttribute("tradeListSize",list);
         return "pay";
@@ -42,7 +42,7 @@ public class PayControl {
         Map map=CommonUtil.mapPay;
         map.put("pageNum",pageNum);
         Map map1=tradeService.getAllPay(map);
-        List list= PageUtil.pageNum(map1,"tradeEntitiesize");
+        List list= PageUtil.pageNum(map1,"tradeEntitiesize",10);
         model.addAttribute("tradeList",map1.get("tradeEntities"));
         model.addAttribute("tradeListSize",list);
         return "pay";

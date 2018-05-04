@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiamu.onlinediskback.dao.DownDao">
+    <resultMap id="BaseResultMap" type="com.xiamu.onlinediskback.entity.DownEntity">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="fileId" property="fileId" jdbcType="INTEGER"/>
+        <result column="userId" property="userId" jdbcType="INTEGER"/>
+        <result column="time" property="time" jdbcType="DATE"/>
+        <association property="userFileEntity" javaType="com.xiamu.onlinediskback.entity.UserFileEntity">
+            <id column="id" property="id" jdbcType="INTEGER"/>
+            <result column="ufname" property="fileName" jdbcType="VARCHAR"/>
+        </association>
+        <association property="userEntity" javaType="com.xiamu.onlinediskback.entity.UserEntity">
+            <result column="uname" property="name" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <select id="getAllDown" resultMap="BaseResultMap" parameterType="Map">
+        SELECT d.*,uf.name as ufname,u.name as uname
+        FROM
+        download d,user_file uf, user u
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <if test="fileName!=null and fileName.length()>0"> and d.fileId = (SELECT id from user_file where `name`=${fileName})</if>
+            <if test="fileId!=null and fileId.length()>0"> and d.fileId = ${fileId}</if>
+            <if test="userName!=null and userName.length()>0">and d.userId = (SELECT id FROM `user` where `name`=${userName})</if>
+            and d.fileId=uf.id
+            AND d.userId=u.id
+        </trim>
+    </select>
+</mapper>

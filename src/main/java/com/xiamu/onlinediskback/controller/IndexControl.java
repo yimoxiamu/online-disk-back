@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,10 +33,14 @@ public class IndexControl {
     MsgService msgService;
 
     @RequestMapping("pay")
-    public String pay(HttpServletRequest request,Model model){
+    public String pay(HttpServletRequest request){
+        HttpSession session=request.getSession();
         CookieUtil cookieUtil = new CookieUtil();
         if (cookieUtil.getCookieByName(request, "name") != null) {
-            model.addAttribute("name", cookieUtil.getCookieByName(request, "name").getValue());
+            return "pay";
+        }
+        log.info("sessionID="+session.getId()+"session是新的？"+session.isNew());
+        if (session.getAttribute("name") != null) {
             return "pay";
         }
         return "login";
@@ -43,9 +48,12 @@ public class IndexControl {
 
     @RequestMapping("post")
     public String post(HttpServletRequest request,Model model){
+        HttpSession session=request.getSession();
         CookieUtil cookieUtil = new CookieUtil();
         if (cookieUtil.getCookieByName(request, "name") != null) {
-            model.addAttribute("name", cookieUtil.getCookieByName(request, "name").getValue());
+            return "post";
+        }
+        if (session.getAttribute("name") != null) {
             return "post";
         }
         return "login";
@@ -54,10 +62,26 @@ public class IndexControl {
 
     @RequestMapping("user")
     public String toUser(HttpServletRequest request, Model model) {
+        HttpSession session=request.getSession();
         CookieUtil cookieUtil = new CookieUtil();
         if (cookieUtil.getCookieByName(request, "name") != null) {
-            model.addAttribute("name", cookieUtil.getCookieByName(request, "name").getValue());
             return "user";
+        }
+        if (session.getAttribute("name") != null) {
+            return "user";
+        }
+        return "login";
+    }
+
+    @RequestMapping("down")
+    public String down(HttpServletRequest request, Model model) {
+        HttpSession session=request.getSession();
+        CookieUtil cookieUtil = new CookieUtil();
+        if (cookieUtil.getCookieByName(request, "name") != null) {
+            return "down";
+        }
+        if (session.getAttribute("name") != null) {
+            return "down";
         }
         return "login";
     }
@@ -80,7 +104,7 @@ public class IndexControl {
         log.info("前端传递过来的参数为：" + jsonText);
         Map map1 = userService.getUsers(map);
         log.info("获取user总数成功，总数为：" + map1.get("listsize"));
-        List list= PageUtil.pageNum(map1,"listsize");
+        List list= PageUtil.pageNum(map1,"listsize",10);
         model.addAttribute("countList", list);
         model.addAttribute("userLists", map1.get("userlist"));
         return "user";
@@ -96,7 +120,7 @@ public class IndexControl {
             map.put("pageNum", (Integer) map.get("pageNum") + 1);
         }
         Map map1 = userService.getUsers(map);
-        List list= PageUtil.pageNum(map1,"listsize");
+        List list= PageUtil.pageNum(map1,"listsize",10);
         model.addAttribute("countList", list);
         model.addAttribute("userLists", map1.get("userlist"));
         return "user";

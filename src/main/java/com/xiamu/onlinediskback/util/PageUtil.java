@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 public class PageUtil {
-    public static List<PageEntity> pageNum(Map map, String lists){
+    public static List<PageEntity> pageNum(Map map, String lists,int pagesize){
         int count = (Integer) map.get(lists);
         int pageCount;
-        if (count % 10 == 0) {
-            pageCount = count / 10;
+        if (count % pagesize == 0) {
+            pageCount = count / pagesize;
         } else {
-            pageCount = count / 10 + 1;
+            pageCount = count / pagesize + 1;
         }
         List list = new ArrayList();
         for (int i = 1; i <= pageCount; i++) {

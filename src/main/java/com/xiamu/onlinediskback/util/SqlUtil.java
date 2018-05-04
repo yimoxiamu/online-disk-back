@@ -34,6 +34,12 @@ public class SqlUtil {
         if (map.get("userId")!=null&&map.get("userId")!=""){
             map.put("userId","\'"+map.get("userId")+"\'");
         }
+        if (map.get("userName")!=null&&map.get("userName")!=""){
+            map.put("userName","\'"+map.get("userName")+"\'");
+        }
+        if (map.get("fileName")!=null&&map.get("fileName")!=""){
+            map.put("fileName","\'"+map.get("fileName")+"\'");
+        }
 
         return map;
     }

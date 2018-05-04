@@ -52,15 +52,18 @@ public class LoginControl {
                           HttpServletResponse response,
                           String check,
                           Model model) {
-
+        HttpSession session=request.getSession();
+        log.info("sessionID="+session.getId()+"session是新的？"+session.isNew());
         CookieUtil cookieUtil = new CookieUtil();
         if (cookieUtil.getCookieByName(request, "name") != null) {
             model.addAttribute("name", cookieUtil.getCookieByName(request, "name").getValue());
+            session.setAttribute("name","sessionOK");
             return "index";
         }
 
         if (admin_name != null && admin_pass != null) {
             log.info("收到前端传递过来的参数，name=" + admin_name + ",pass=" + admin_pass + ",check=" + check);
+            session.setAttribute("name","sessionOK");
             String code = adminService.login(admin_name, admin_pass);
             if (code.equals("0000")) {
                 if (check!=null&&!check.equals("")) {

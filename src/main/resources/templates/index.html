@@ -42,36 +42,19 @@
             <span>Download</span><i class="fa fa-cloud-upload"></i>
 
             <input type="radio" class="tab-6" name="tab">
-            <span>Favorite</span><i class="fa fa-star"></i>
-
-            <input type="radio" class="tab-7" name="tab">
-            <span>Photos</span><i class="fa fa-photo"></i>
-
-            <input type="radio" class="tab-8" name="tab">
-            <span>Analysis</span><i class="fa fa-line-chart"></i>
-
-            <input type="radio" class="tab-9" name="tab">
-            <span>Links</span><i class="fa fa-link"></i>
-
-            <input type="radio" class="tab-10" name="tab">
-            <span>Settings</span><i class="fa fa-cog"></i>
-
+            <span>File</span><i class="fa fa-star"></i>
+            <input type="radio" class="tab-6" name="tab">
+            <span></span>
+            <input type="radio" class="tab-6" name="tab">
+            <span></span>
+            <input type="radio" class="tab-6" name="tab">
+            <span></span>
             <!-- tab-top-bar -->
             <div class="top-bar">
                 <ul>
                     <li>
                         <a th:href="@{/}" title="Log Out" onclick=delCookie()>
                             <i class="fa fa-sign-out"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" title="Messages">
-                            <i class="fa fa-envelope"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a  title="Edit" >
-                            <i class="fa fa-edit"></i>
                         </a>
                     </li>
                 </ul>
@@ -95,15 +78,27 @@
                         </tr>
                         <tr>
                             <td>拉黑</td>
-                            <td>Mumbai</td>
+                            <td>√</td>
                         </tr>
                         <tr>
                             <td>扩容</td>
-                            <td>Mumbai</td>
+                            <td>√</td>
                         </tr>
                         <tr>
                             <td>会员</td>
-                            <td>Mumbai</td>
+                            <td>√</td>
+                        </tr>
+                        <tr>
+                            <td>下载记录</td>
+                            <td>√</td>
+                        </tr>
+                        <tr>
+                            <td>用户文件管理</td>
+                            <td>√</td>
+                        </tr>
+                        <tr>
+                            <td>发布公告</td>
+                            <td>√</td>
                         </tr>
                         </tbody>
                     </table>
@@ -118,22 +113,10 @@
                     <iframe src="http://localhost:8080/pay" frameborder="0" height="80%" width="100%"></iframe>
                 </section>
                 <section class="tab-item-5">
-                    <h1>Five</h1>
+                    <iframe src="http://localhost:8080/down" frameborder="0" height="80%" width="100%"></iframe>
                 </section>
                 <section class="tab-item-6">
-                    <h1>Six</h1>
-                </section>
-                <section class="tab-item-7">
-                    <h1>Sever</h1>
-                </section>
-                <section class="tab-item-8">
-                    <h1>Eight</h1>
-                </section>
-                <section class="tab-item-9">
-                    <h1>Nine</h1>
-                </section>
-                <section class="tab-item-10">
-                    <h1>Ten</h1>
+                    <iframe src="http://localhost:8080/file" frameborder="0" height="80%" width="100%"></iframe>
                 </section>
             </div>
         </div>
